@@ -11,7 +11,11 @@
   },
   "dependencies": {
     "react": "17.0.1",
-    "react-native": "0.64.1"
+    "react-native": "0.64.1",
+    "@grpc/grpc-js": "^0.3.6",
+    "google-protobuf": "^3.7.1",
+    "grpc": "^1.19.0",
+    "grpc-web": "^1.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.14.2",
