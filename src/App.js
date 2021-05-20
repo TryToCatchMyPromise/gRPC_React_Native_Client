@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import React, {useState} from 'react'
 import {
   Button,
   SafeAreaView,
@@ -12,6 +12,13 @@ import {
 } from 'react-native'
 
 import {Colors} from 'react-native/Libraries/NewAppScreen'
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+const {AdderClient} = require('./api/adder_grpc_web_pb')
+// eslint-disable-next-line @typescript-eslint/no-var-requires,global-require
+const {AddRequest, AddResponse} = require('./api/adder_pb')
+
+const client = new AdderClient('http://localhost:9090', null, null)
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark'
@@ -69,9 +76,50 @@ const App = () => {
   const [firstInputValue, setFirstInputValue] = useState(0)
   const [secondInputValue, setSecondInputValue] = useState(0)
 
+  function throttle(func, ms) {
+    let isThrottled = false
+    let savedArgs
+    let savedThis
+
+    function wrapper() {
+      if (isThrottled) {
+        savedArgs = arguments
+        savedThis = this
+        return
+      }
+
+      func.apply(this, arguments)
+
+      isThrottled = true
+
+      setTimeout(function () {
+        isThrottled = false
+        if (savedArgs) {
+          wrapper.apply(savedThis, savedArgs)
+          savedArgs = savedThis = null
+        }
+      }, ms)
+    }
+
+    return wrapper
+  }
+
   const handleResultPress = () => {
     setResult(+firstInputValue + +secondInputValue)
   }
+
+  // const callGrpcService = () => {
+  //   const request = new AddRequest()
+  //   request.???
+  //
+  //   client.add(request, {}, (err, response) => {
+  //     if (response == null) {
+  //       console.log(err)
+  //     } else {
+  //       console.log(response.???)
+  //     }
+  //   })
+  // }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -84,7 +132,7 @@ const App = () => {
         <TextInput style={styles.input} onChangeText={(text) => setFirstInputValue(text)} />
         <Text>Second number: </Text>
         <TextInput style={styles.input} onChangeText={(text) => setSecondInputValue(text)} />
-        <Button style={styles.resultButton} title='Result' onPress={handleResultPress} />
+        <Button style={styles.resultButton} title='Result' onPress={throttle(handleResultPress, 5000)} />
         <View style={styles.resultContainer}>
           <Text>Result is {result}</Text>
         </View>
