@@ -5,7 +5,6 @@ import (
 	"gRPC_React_Native_Client/pkg/api"
 	"log"
 	"net"
-
 	"google.golang.org/grpc"
 )
 
@@ -14,7 +13,7 @@ s:= grpc.NewServer()
 srv := &adder.GRPCServer{}
 api.RegisterAdderServer(s, srv  )
 
-l, err := net.Listen("tcp", ":9090")
+l, err := net.Listen("tcp", ":8080")
 if err != nil {
 log.Fatal(err)
 }

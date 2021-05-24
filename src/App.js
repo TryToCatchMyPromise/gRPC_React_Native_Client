@@ -1,15 +1,5 @@
-import React, {useState} from 'react'
-import {
-  Button,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  useColorScheme,
-  View
-} from 'react-native'
+import React from 'react'
+import {SafeAreaView, StatusBar, StyleSheet, useColorScheme} from 'react-native'
 
 import {Colors} from 'react-native/Libraries/NewAppScreen'
 
